@@ -25,6 +25,11 @@ export default class App extends React.Component {
                         underlineColorAndroid='transparent'>
                     </TextInput>
                 </View>
+                <TouchableOpacity style={styles.addButton}>
+                    <Text style={styles.addButtonText}>
+                        +
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -71,8 +76,8 @@ const styles = StyleSheet.create({
         right: 20,
         bottom: 90,
         backgroundColor: '#E91E63',
-        width: 90,
-        height: 90,
+        width: 70,
+        height: 70,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
