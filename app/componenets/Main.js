@@ -7,11 +7,13 @@ import {
     ScrollView,
     TouchableOpacity,
     AsyncStorage,
-    Dimensions
+    Dimensions,
+    CheckBox,
 } from 'react-native';
 
 var { height } = Dimensions.get('window')
-var boxHeight = (height / 2) - 20
+var boxHeight = (height - 20) / 2
+var inputHeight = boxHeight / 4
 
 export default class Main extends React.Component {
     componentDidMount() {
@@ -20,8 +22,12 @@ export default class Main extends React.Component {
         super(props);
         this.state = {
             email: '',
-            name: '',
+            firstName: '',
+            lastName: '',
             phone: '',
+            cricket: false,
+            football: false,
+            dance: false,
         }
     }
     render() {
@@ -30,22 +36,67 @@ export default class Main extends React.Component {
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Moodcafe</Text>
                 </View>
-                <View style={styles.form, styles.divHeight}>
-                    <TextInput style={styles.textInput}
-                        onChangeText={(noteText) => this.setState({ noteText })}
-                        value={this.state.noteText}
-                        placeholder='Email'
-                        placeholderTextColor='gray'
-                        underlineColorAndroid='transparent'>
-                    </TextInput>
-                    <View style={styles.name}>
+                <View style={styles.boxHeight, styles.container}>
+                    <View style={styles.inputHeight, styles.row}>
                         <TextInput style={styles.textInput}
                             onChangeText={(noteText) => this.setState({ noteText })}
                             value={this.state.noteText}
-                            placeholder='Name'
+                            placeholder='First Name'
                             placeholderTextColor='gray'
                             underlineColorAndroid='transparent'>
                         </TextInput>
+                        <TextInput style={styles.textInput}
+                            onChangeText={(noteText) => this.setState({ noteText })}
+                            value={this.state.noteText}
+                            placeholder='Last Name'
+                            placeholderTextColor='gray'
+                            underlineColorAndroid='transparent'>
+                        </TextInput>
+                    </View>
+                    <View style={styles.inputHeight, styles.row}>
+                        <View style={styles.email}>
+                            <TextInput style={styles.textInput}
+                                onChangeText={(noteText) => this.setState({ noteText })}
+                                value={this.state.noteText}
+                                placeholder='Email'
+                                placeholderTextColor='gray'
+                                underlineColorAndroid='transparent'>
+                            </TextInput>
+                        </View>
+                        <View style={styles.phone}>
+                            <TextInput style={styles.textInput}
+                                onChangeText={(noteText) => this.setState({ noteText })}
+                                value={this.state.noteText}
+                                placeholder='Phone'
+                                placeholderTextColor='gray'
+                                underlineColorAndroid='transparent'>
+                            </TextInput>
+                        </View>
+                    </View>
+                    <View style={styles.inputHeight, styles.row}>
+                        <View style={styles.checkBoxInput}>
+                            <Text style={styles.hobbies}>Hobbies </Text>
+                        </View>
+                        <View style={styles.checkBoxInput}>
+                            <CheckBox style={styles.checkBox} value={this.state.cricket}
+                                onChange={() => this.toggleCheckBox()}>
+                            </CheckBox>
+                            <Text style={styles.checkBoxText}>Cricket</Text>
+                        </View>
+                        <View style={styles.checkBoxInput}>
+                            <CheckBox style={styles.checkBox} value={this.state.cricket}
+                                onChange={() => this.toggleCheckBox()}>
+                            </CheckBox>
+                            <Text style={styles.checkBoxText}>Football</Text>
+                        </View>
+                        <View style={styles.checkBoxInput}>
+                            <CheckBox style={styles.checkBox} value={this.state.cricket}
+                                onChange={() => this.toggleCheckBox()}>
+                            </CheckBox>
+                            <Text style={styles.checkBoxText}>Dance</Text>
+                        </View>
+                    </View>
+                    <View style={styles.inputHeight}>
                         <TextInput style={styles.textInput}
                             onChangeText={(noteText) => this.setState({ noteText })}
                             value={this.state.noteText}
@@ -55,14 +106,14 @@ export default class Main extends React.Component {
                         </TextInput>
                     </View>
                 </View>
-                <View style={styles.divHeight}>
+                <View style={styles.boxHeight}>
                     <Text style={styles.textInput}>Moodcafe</Text>
                 </View>
-                {/* <TouchableOpacity onPress={this.addNote.bind(this)} style={styles.addButton}>
-                    <Text style={styles.addButtonText}>+</Text>
-                </TouchableOpacity> */}
             </View>
         );
+    }
+    toggleCheckBox() {
+        this.setState({ cricket: !this.state.cricket })
     }
     addNote() {
         if (this.state.noteText) {
@@ -90,8 +141,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-    divHeight: {
+    boxHeight: {
         height: boxHeight,
+    },
+    inputHeight: {
+        height: inputHeight,
     },
     header: {
         backgroundColor: '#007575',
@@ -107,11 +161,8 @@ const styles = StyleSheet.create({
         padding: 20,
 
     },
-    scrollContainer: {
-        flex: 1,
-        marginBottom: 100,
-    },
     form: {
+        flex: 1,
         top: 5,
         left: 0,
         right: 0,
@@ -120,15 +171,44 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         alignSelf: 'stretch',
-        padding: 10,
+        padding: 5,
         backgroundColor: '#EBEBEB',
         borderColor: '#939393',
         borderBottomWidth: 3,
         marginTop: 4,
     },
-    name: {
+    row: {
         flex: 1,
         flexDirection: 'row'
+    },
+    phone: {
+        flex: 7,
+        flexDirection: 'row',
+    },
+    email: {
+        flex: 12,
+        flexDirection: 'row',
+    },
+    checkBoxInput: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#EBEBEB',
+        marginTop: 4,
+    },
+    checkBoxText: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    checkBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    hobbies: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#007575',
     },
     addButton: {
         position: 'absolute',
