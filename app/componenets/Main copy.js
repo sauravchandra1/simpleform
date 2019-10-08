@@ -6,61 +6,49 @@ import {
     TextInput,
     ScrollView,
     TouchableOpacity,
-    AsyncStorage,
-    Dimensions
+    AsyncStorage
 } from 'react-native';
 
-var { height } = Dimensions.get('window')
-var boxHeight = (height / 2) - 20
+import Note from './Note'
 
 export default class Main extends React.Component {
     componentDidMount() {
+        AsyncStorage.getItem('noteText').then((value) => {
+            this.setState({ noteText: value })
+        })
     }
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            name: '',
-            phone: '',
+            noteArray: [],
+            noteText: '',
         }
     }
     render() {
+        let notes = this.state.noteArray.map((val, key) => {
+            return <Note key={key} keyval={key} val={val}
+                deleteMethod={() => this.deleteNote(key)} />
+        })
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>Moodcafe</Text>
+                    <Text style={styles.headerText}>NOTER + {this.state.noteText}</Text>
                 </View>
-                <View style={styles.form, styles.divHeight}>
+                <ScrollView style={styles.scrollContainer}>
+                    {notes}
+                </ScrollView>
+                <View style={styles.footer}>
                     <TextInput style={styles.textInput}
                         onChangeText={(noteText) => this.setState({ noteText })}
                         value={this.state.noteText}
-                        placeholder='Email'
-                        placeholderTextColor='gray'
+                        placeholder='>note'
+                        placeholderTextColor='white'
                         underlineColorAndroid='transparent'>
                     </TextInput>
-                    <View style={styles.name}>
-                        <TextInput style={styles.textInput}
-                            onChangeText={(noteText) => this.setState({ noteText })}
-                            value={this.state.noteText}
-                            placeholder='Name'
-                            placeholderTextColor='gray'
-                            underlineColorAndroid='transparent'>
-                        </TextInput>
-                        <TextInput style={styles.textInput}
-                            onChangeText={(noteText) => this.setState({ noteText })}
-                            value={this.state.noteText}
-                            placeholder='Email'
-                            placeholderTextColor='gray'
-                            underlineColorAndroid='transparent'>
-                        </TextInput>
-                    </View>
                 </View>
-                <View style={styles.divHeight}>
-                    <Text style={styles.textInput}>Moodcafe</Text>
-                </View>
-                {/* <TouchableOpacity onPress={this.addNote.bind(this)} style={styles.addButton}>
+                <TouchableOpacity onPress={this.addNote.bind(this)} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
         );
     }
@@ -88,54 +76,44 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-    },
-    divHeight: {
-        height: boxHeight,
     },
     header: {
-        backgroundColor: '#007575',
+        backgroundColor: '#E91E63',
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomWidth: 4,
-        borderBottomColor: '#274D33',
+        borderBottomWidth: 10,
+        borderBottomColor: '#ddd',
     },
     headerText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: 'bold',
-        padding: 20,
-
+        padding: 26,
     },
     scrollContainer: {
         flex: 1,
         marginBottom: 100,
     },
-    form: {
-        top: 5,
+    footer: {
+        position: 'absolute',
+        bottom: 0,
         left: 0,
         right: 0,
         zIndex: 10,
     },
     textInput: {
-        flex: 1,
         alignSelf: 'stretch',
-        padding: 10,
-        backgroundColor: '#EBEBEB',
-        borderColor: '#939393',
-        borderBottomWidth: 3,
-        marginTop: 4,
-    },
-    name: {
-        flex: 1,
-        flexDirection: 'row'
+        color: '#fff',
+        padding: 20,
+        backgroundColor: '#252525',
+        borderTopWidth: 2,
+        borderTopColor: '#ededed',
     },
     addButton: {
         position: 'absolute',
         zIndex: 11,
         right: 20,
         bottom: 90,
-        backgroundColor: '#EBEBEB',
+        backgroundColor: '#E91E63',
         width: 70,
         height: 70,
         borderRadius: 50,
