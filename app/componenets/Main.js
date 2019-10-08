@@ -36,7 +36,7 @@ export default class Main extends React.Component {
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Moodcafe</Text>
                 </View>
-                <View style={styles.boxHeight, styles.container}>
+                <View style={styles.boxHeightTop, styles.container}>
                     <View style={styles.inputHeight, styles.row}>
                         <TextInput style={styles.textInput}
                             onChangeText={(noteText) => this.setState({ noteText })}
@@ -75,7 +75,7 @@ export default class Main extends React.Component {
                     </View>
                     <View style={styles.inputHeight, styles.row}>
                         <View style={styles.checkBoxInput}>
-                            <Text style={styles.hobbies}>Hobbies </Text>
+                            <Text style={styles.hobbies}>Hobbies</Text>
                         </View>
                         <View style={styles.checkBoxInput}>
                             <CheckBox style={styles.checkBox} value={this.state.cricket}
@@ -96,17 +96,14 @@ export default class Main extends React.Component {
                             <Text style={styles.checkBoxText}>Dance</Text>
                         </View>
                     </View>
-                    <View style={styles.inputHeight}>
-                        <TextInput style={styles.textInput}
-                            onChangeText={(noteText) => this.setState({ noteText })}
-                            value={this.state.noteText}
-                            placeholder='Email'
-                            placeholderTextColor='gray'
-                            underlineColorAndroid='transparent'>
-                        </TextInput>
+                    <View style={styles.submitHeight}>
+                        <TouchableOpacity onPress={this.addNote.bind(this)}
+                            style={styles.submitButton}>
+                            <Text style={styles.submitButtonText}>Submit</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.boxHeight}>
+                <View style={styles.boxHeightBottom}>
                     <Text style={styles.textInput}>Moodcafe</Text>
                 </View>
             </View>
@@ -141,11 +138,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-    boxHeight: {
-        height: boxHeight,
+    boxHeightBottom: {
+        height: boxHeight + 20,
+    },
+    boxHeightTop: {
+        height: boxHeight - 20,
     },
     inputHeight: {
         height: inputHeight,
+    },
+    submitHeight: {
+        height: inputHeight - 20,
     },
     header: {
         backgroundColor: '#007575',
@@ -210,21 +213,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#007575',
     },
-    addButton: {
+    submitButton: {
         position: 'absolute',
         zIndex: 11,
-        right: 20,
-        bottom: 90,
-        backgroundColor: '#EBEBEB',
-        width: 70,
-        height: 70,
+        right: 100,
+        backgroundColor: '#007575',
+        width: 170,
+        height: 50,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 8,
+        elevation: 10,
+        marginTop: 5,
     },
-    addButtonText: {
+    submitButtonText: {
         color: '#fff',
-        fontSize: 24,
+        fontSize: 16,
     },
 });
