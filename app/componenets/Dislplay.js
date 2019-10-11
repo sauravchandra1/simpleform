@@ -3,11 +3,10 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
     Dimensions,
     ScrollView,
     Alert,
-    AsyncStorage, 
+    AsyncStorage,
     Keyboard,
 } from 'react-native';
 
@@ -82,6 +81,14 @@ export default class Display extends React.Component {
             ],
             { cancelable: false }
         )
+    }
+    emailExist() {
+        for (let i = 0; i < this.state.formArray.length; i++) {
+            if (this.state.formArray[i].email === this.props.email) {
+                return true
+            }
+        }
+        return false
     }
     addEntry() {
         let hobbies = ''

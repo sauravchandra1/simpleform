@@ -5,7 +5,6 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    AsyncStorage,
     Dimensions,
     CheckBox,
     Alert,
@@ -180,45 +179,45 @@ export default class Form extends React.Component {
         var isNameValid = this.nameValid(this.state.firstName, this.state.lastName)
         var isEmailValid = this.emailValid(this.state.email)
         var isPhoneValid = this.phoneValid(this.state.phone)
-        // console.log('name -> ' + isNameValid)
-        // console.log('email -> ' + isEmailValid)
-        // console.log('phone -> ' + isPhoneValid)
-        // console.log(this.state.cricket + this.state.football + this.state.dance)
-        if (isNameValid && isEmailValid && isPhoneValid) {
-            if (this.state.editMode) {
-                this.state.editMode = !this.state.editMode
-                this.refs.display.editAddEntry(this.state.key)
+        if (!this.refs.display.emailExist() && !this.state.editMode || this.state.editMode) {
+            if (isNameValid && isEmailValid && isPhoneValid) {
+                if (this.state.editMode) {
+                    this.state.editMode = !this.state.editMode
+                    this.refs.display.editAddEntry(this.state.key)
+                } else {
+                    this.refs.display.addEntry()
+                }
+                this.setState({ firstName: '' })
+                this.setState({ lastName: '' })
+                this.setState({ email: '' })
+                this.setState({ phone: '' })
+                this.setState({ cricket: false })
+                this.setState({ football: false })
+                this.setState({ dance: false })
             } else {
-                this.refs.display.addEntry()
+                let nameError = '* Name is not correct'
+                let emailError = '* Email is not correct'
+                let phoneError = '* Phone Number is not correct'
+                let errorMsg = ''
+                if (!isNameValid) {
+                    errorMsg += nameError
+                }
+                if (!isEmailValid) {
+                    if (errorMsg.length > 0) {
+                        errorMsg += '\n'
+                    }
+                    errorMsg += emailError
+                }
+                if (!isPhoneValid) {
+                    if (errorMsg.length > 0) {
+                        errorMsg += '\n'
+                    }
+                    errorMsg += phoneError
+                }
+                this.showError(errorMsg)
             }
-            this.setState({ firstName: '' })
-            this.setState({ lastName: '' })
-            this.setState({ email: '' })
-            this.setState({ phone: '' })
-            this.setState({ cricket: false })
-            this.setState({ football: false })
-            this.setState({ dance: false })
         } else {
-            let nameError = '* Name is not correct'
-            let emailError = '* Email is not correct'
-            let phoneError = '* Phone Number is not correct'
-            let errorMsg = ''
-            if (!isNameValid) {
-                errorMsg += nameError
-            }
-            if (!isEmailValid) {
-                if (errorMsg.length > 0) {
-                    errorMsg += '\n'
-                }
-                errorMsg += emailError
-            }
-            if (!isPhoneValid) {
-                if (errorMsg.length > 0) {
-                    errorMsg += '\n'
-                }
-                errorMsg += phoneError
-            }
-            this.showError(errorMsg)
+            this.showError('* Email Already Exist!')
         }
     }
     deleteNote(key) {
