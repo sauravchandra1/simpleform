@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
 
 var { height } = Dimensions.get('window')
@@ -16,6 +17,31 @@ var inputHeight = boxHeight / 4
 import Entry from './Entry'
 
 export default class Display extends React.Component {
+    async storeItem(key, item) {
+        try {
+            var jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
+            return jsonOfItem;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+    async retrieveItem(key) {
+        try {
+            const retrievedItem = await AsyncStorage.getItem(key);
+            const item = JSON.parse(retrievedItem);
+            return item;
+        } catch (error) {
+            console.log(error.message);
+        }
+        return
+    }
+    componentDidMount() {
+        this.retrieveItem('formArray').then((value) => {
+            this.setState({ formArray: value })
+        }).catch((error) => {
+            console.log('Promise is rejected with error: ' + error);
+        });
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +49,7 @@ export default class Display extends React.Component {
         }
     }
     render() {
+
         let formEntries = this.state.formArray.map((value, key) => {
             return <Entry key={key}
                 value={value}
@@ -83,6 +110,7 @@ export default class Display extends React.Component {
             'dance': this.props.dance,
             'hobbies': hobbies,
         });
+        this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
         this.showSuccess()
     }
