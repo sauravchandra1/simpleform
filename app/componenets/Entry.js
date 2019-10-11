@@ -4,13 +4,63 @@ import {
     Text,
     View,
     TouchableOpacity,
+    TouchableHighlight,
+    Modal,
+    Alert,
+    Dimensions,
 } from 'react-native';
 
+var { width, height } = Dimensions.get('window')
+
 export default class Entry extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalVisible: false,
+        }
+    }
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={this.addNote.bind(this)}
+                <Modal
+                    transparent={true}
+                    animationType='fade'
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        this.setModalVisible(!this.state.modalVisible)
+                    }}>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            style={styles.modalButton}
+                            onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible);
+                            }}>
+                            <Text style={styles.modalText}>Edit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            style={styles.modalButton}
+                            onPress={() => {
+                                this.props.deleteMethod()
+                                this.setModalVisible(!this.state.modalVisible)
+                            }}>
+                            <Text style={styles.modalText}>Delete</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            style={styles.modalButton}
+                            onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible);
+                            }}>
+                            <Text style={styles.modalText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+                <TouchableOpacity onLongPress={() => { this.setModalVisible(true) }}
                     style={styles.submitButton}
                     activeOpacity={0.9}>
                     <View style={styles.entryContainer}>
@@ -18,19 +68,19 @@ export default class Entry extends React.Component {
                             <View style={styles.entryName}>
                                 <Text style={styles.tableText}>
                                     {this.props.value.firstName} {this.props.value.lastName}
-                                        </Text>
+                                </Text>
                             </View>
                             <View style={styles.entryPhone}>
                                 <Text style={styles.tableText}>
                                     {this.props.value.phone}
-                                        </Text>
+                                </Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.entryEmail}>
                                 <Text style={styles.tableText}>
                                     {this.props.value.email}
-                                        </Text>
+                                </Text>
                             </View>
                         </View>
                         <View style={styles.row}>
@@ -40,7 +90,7 @@ export default class Entry extends React.Component {
                                         Hobbies: {' '}
                                     </Text>
                                     {this.props.value.hobbies}
-                                    </Text>
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -128,5 +178,37 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         padding: 5,
+    },
+    modalView: {
+        position: 'absolute',
+        elevation: 100,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+        borderWidth: 1,
+        borderColor: '#0b5345',
+        height: height / 4,
+        padding: 10,
+        margin: 90,
+        marginTop: 180,
+        width: width / 2,
+    },
+    modalText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#ffffff',
+
+    },
+    modalButton: {
+        zIndex: 11,
+        backgroundColor: '#16a085',
+        width: 150,
+        height: 40,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 10,
+        marginTop: 5,
     },
 });

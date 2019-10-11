@@ -7,7 +7,8 @@ import {
     Dimensions,
     ScrollView,
     Alert,
-    AsyncStorage
+    AsyncStorage, 
+    Keyboard,
 } from 'react-native';
 
 var { height } = Dimensions.get('window')
@@ -53,6 +54,7 @@ export default class Display extends React.Component {
         let formEntries = this.state.formArray.map((value, key) => {
             return <Entry key={key}
                 value={value}
+                deleteMethod={() => this.deleteEntry(key)}
             />
         })
         return (
@@ -70,10 +72,10 @@ export default class Display extends React.Component {
             </View>
         );
     }
-    showSuccess() {
+    showSuccess(successMsg) {
         Alert.alert(
             'Success',
-            'Form Submitted Successfully!',
+            successMsg,
             [
                 { text: "OK", onPress: () => console.log("OK Pressed") }
             ],
@@ -112,7 +114,14 @@ export default class Display extends React.Component {
         });
         this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
-        this.showSuccess()
+        this.showSuccess('Form Submitted Successfully!')
+        Keyboard.dismiss()
+    }
+    deleteEntry(key) {
+        this.state.formArray.splice(key, 1);
+        this.storeItem('formArray', this.state.formArray)
+        this.setState({ formArray: this.state.formArray })
+        this.showSuccess('Entry Deleted Successfully!')
     }
 }
 

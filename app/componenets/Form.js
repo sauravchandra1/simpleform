@@ -303,8 +303,8 @@ const styles = StyleSheet.create({
     submitButton: {
         position: 'absolute',
         zIndex: 11,
-        right: 100,
-        backgroundColor: '#007575',
+        right: 95,
+        backgroundColor: '#17a589',
         width: 170,
         height: 50,
         borderRadius: 50,
