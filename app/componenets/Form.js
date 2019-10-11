@@ -30,6 +30,8 @@ export default class Form extends React.Component {
             cricket: false,
             football: false,
             dance: false,
+            editMode: false,
+            key: ''
         }
     }
     render() {
@@ -114,6 +116,7 @@ export default class Form extends React.Component {
                         cricket={this.state.cricket}
                         football={this.state.football}
                         dance={this.state.dance}
+                        editMethod={(entry, key) => this.editEntry(entry, key)}
                     />
                 </View>
             </View>
@@ -182,7 +185,12 @@ export default class Form extends React.Component {
         // console.log('phone -> ' + isPhoneValid)
         // console.log(this.state.cricket + this.state.football + this.state.dance)
         if (isNameValid && isEmailValid && isPhoneValid) {
-            this.refs.display.addEntry()
+            if (this.state.editMode) {
+                this.state.editMode = !this.state.editMode
+                this.refs.display.editAddEntry(this.state.key)
+            } else {
+                this.refs.display.addEntry()
+            }
             this.setState({ firstName: '' })
             this.setState({ lastName: '' })
             this.setState({ email: '' })
@@ -190,7 +198,6 @@ export default class Form extends React.Component {
             this.setState({ cricket: false })
             this.setState({ football: false })
             this.setState({ dance: false })
-            this.setState({ formValid: true })
         } else {
             let nameError = '* Name is not correct'
             let emailError = '* Email is not correct'
@@ -217,6 +224,17 @@ export default class Form extends React.Component {
     deleteNote(key) {
         this.state.noteArray.splice(key, 1);
         this.setState({ noteArray: this.state.noteArray });
+    }
+    editEntry(entry, key) {
+        this.setState({ firstName: entry.firstName })
+        this.setState({ lastName: entry.lastName })
+        this.setState({ email: entry.email })
+        this.setState({ phone: entry.phone })
+        this.setState({ cricket: entry.cricket })
+        this.setState({ football: entry.football })
+        this.setState({ dance: entry.dance })
+        this.setState({ editMode: true })
+        this.setState({ key: key })
     }
 }
 

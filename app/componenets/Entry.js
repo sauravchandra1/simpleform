@@ -37,6 +37,7 @@ export default class Entry extends React.Component {
                             activeOpacity={0.6}
                             style={styles.modalButton}
                             onPress={() => {
+                                this.props.editMethod()
                                 this.setModalVisible(!this.state.modalVisible);
                             }}>
                             <Text style={styles.modalText}>Edit</Text>

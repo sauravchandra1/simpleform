@@ -55,6 +55,7 @@ export default class Display extends React.Component {
             return <Entry key={key}
                 value={value}
                 deleteMethod={() => this.deleteEntry(key)}
+                editMethod={() => this.editEntry(key)}
             />
         })
         return (
@@ -117,11 +118,51 @@ export default class Display extends React.Component {
         this.showSuccess('Form Submitted Successfully!')
         Keyboard.dismiss()
     }
+    editAddEntry(key) {
+        let hobbies = ''
+        if (this.props.cricket) {
+            hobbies += 'Cricket'
+        }
+        if (this.props.football) {
+            if (hobbies.length > 0) {
+                hobbies += ', '
+            }
+            hobbies += 'Football'
+        }
+        if (this.props.dance) {
+            if (hobbies.length > 0) {
+                hobbies += ', '
+            }
+            hobbies += 'Dance'
+        }
+        if (hobbies.length == 0) {
+            hobbies += 'None'
+        }
+        let editObject = {
+            'firstName': this.props.firstName,
+            'lastName': this.props.lastName,
+            'email': this.props.email,
+            'phone': this.props.phone,
+            'cricket': this.props.cricket,
+            'football': this.props.football,
+            'dance': this.props.dance,
+            'hobbies': hobbies,
+        }
+        this.state.formArray.splice(key, 1, editObject);
+        this.storeItem('formArray', this.state.formArray)
+        this.setState({ formArray: this.state.formArray })
+        this.showSuccess('Entry Changed Successfully!')
+        Keyboard.dismiss()
+    }
     deleteEntry(key) {
         this.state.formArray.splice(key, 1);
         this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
         this.showSuccess('Entry Deleted Successfully!')
+    }
+    editEntry(key) {
+        let entry = this.state.formArray[key]
+        this.props.editMethod(entry, key)
     }
 }
 
