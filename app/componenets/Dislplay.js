@@ -36,11 +36,11 @@ export default class Display extends React.Component {
         return
     }
     componentDidMount() {
-        this.retrieveItem('formArray').then((value) => {
-            this.setState({ formArray: value })
-        }).catch((error) => {
-            console.log('Promise is rejected with error: ' + error);
-        });
+        // this.retrieveItem('formArray').then((value) => {
+        //     this.setState({ formArray: value })
+        // }).catch((error) => {
+        //     console.log('Promise is rejected with error: ' + error);
+        // });
     }
     constructor(props) {
         super(props);
@@ -120,7 +120,7 @@ export default class Display extends React.Component {
             'dance': this.props.dance,
             'hobbies': hobbies,
         });
-        this.storeItem('formArray', this.state.formArray)
+        // this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
         this.showSuccess('Form Submitted Successfully!')
         Keyboard.dismiss()
@@ -156,14 +156,14 @@ export default class Display extends React.Component {
             'hobbies': hobbies,
         }
         this.state.formArray.splice(key, 1, editObject);
-        this.storeItem('formArray', this.state.formArray)
+        // this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
         this.showSuccess('Entry Changed Successfully!')
         Keyboard.dismiss()
     }
     deleteEntry(key) {
         this.state.formArray.splice(key, 1);
-        this.storeItem('formArray', this.state.formArray)
+        // this.storeItem('formArray', this.state.formArray)
         this.setState({ formArray: this.state.formArray })
         this.showSuccess('Entry Deleted Successfully!')
     }
